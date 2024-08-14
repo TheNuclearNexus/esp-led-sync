@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>esp-rs web server</title>
+    <script src="https://unpkg.com/htmx.org@1.9.9"
+        integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+</head>
+
+<body>
+    <style>
+        @import"https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap";
+
+        :root {
+            font-size: 24px;
+            background-color: #2D3436;
+        }
+
+        @media screen and (min-width: 1024px) {
+            :root {
+                font-size: 18px;
+            }
+        }
+
+        .contentRoot {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            background-color: #2D3436;
+            color: #dfe6e9;
+            font-family: Lexend;
+            text-rendering: optimizeLegibility;
+
+            display: flex;
+            justify-content: center;
+        }
+
+        .buttonLike,
+        button {
+            background-color: #636E72;
+            border-radius: 1rem;
+            padding: 1rem;
+            width: 100%;
+            font-weight: 700;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+
+            font-size: 1.5rem;
+        }
+
+        .buttonLike:hover,
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .buttonLike:active,
+        button:active {
+            opacity: 0.6;
+        }
+
+        .buttonLike:disabled,
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+    </style>
+    <div class="contentRoot">
+        <div class="w-full h-full lg:max-w-xl">
+            {% content %}
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<style>
+    .networkOption {
+        text-align: left;
+    }
+    .networkOption.selected {
+        background-color: #0984E3;
+    }
+
+</style>
+
+<script>
+    var colorPicker = new iro.ColorPicker('#picker', {
+        width: Math.min(window.innerWidth, window.innerHeight * 0.7) * 0.8,
+        color: "{% current_color %}"
+    });
+    let requestTimeout = undefined;
+    let curColor = 0;
+
+    colorPicker.on('color:change', function(color) {
+        curColor = Number.parseInt(color.hexString.substring(1), 16)
+        
+
+        if (requestTimeout === undefined) {
+            requestTimeout = setTimeout(() => {
+                fetch('/set-color', {method: 'POST', body: 'color=' + curColor})
+                requestTimeout = undefined
+            }, 50)
+        }
+    })
+
+</script>
+<div class="flex flex-col justify-center w-full h-full">
+    <div class="flex flex-col gap-[2rem] p-[2rem] w-full h-full">
+        <span class="font-bold text-[2rem] text-center">
+            Color Controls
+        </span>
+        <div class="flex flex-col gap-[1rem] justify-center items-center h-full">
+            <div id="picker"></div>
+        </div>
+    </div>
+
+    <div class="flex flex-row gap-[1rem] p-[2rem] rounded-t-[2rem] w-full" style="background-color: rgba(255, 255, 255, 0.08);">
+        <a class="buttonLike text-center" style="background-color: #D63031;" id="continueButton" href="/">
+            Back
+        </a>
+    </div>
+</div>

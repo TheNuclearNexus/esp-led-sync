@@ -1,0 +1,122 @@
+error: failed to run custom build command for `esp-idf-sys v0.33.7`
+
+Caused by:
+  process didn't exit successfully: `B:\esp\target\debug\build\esp-idf-sys-4776cd58bc6f13c5\build-script-build` (exit code: 101)
+  --- stdout
+  cargo:rerun-if-env-changed=ESP_IDF_TOOLS_INSTALL_DIR
+  cargo:rerun-if-env-changed=ESP_IDF_SDKCONFIG
+  cargo:rerun-if-env-changed=ESP_IDF_SDKCONFIG_DEFAULTS
+  cargo:rerun-if-env-changed=MCU
+  cargo:rerun-if-env-changed=ESP_IDF_SYS_ROOT_CRATE
+  cargo:rerun-if-env-changed=ESP_IDF_VERSION
+  cargo:rerun-if-env-changed=ESP_IDF_REPOSITORY
+  cargo:rerun-if-env-changed=ESP_IDF_CMAKE_GENERATOR
+  cargo:rerun-if-env-changed=IDF_PATH
+  cargo:rerun-if-env-changed=EXTRA-COMPONENTS
+  cargo:rerun-if-env-changed=ESP_IDF_COMPONENTS
+  cargo:rerun-if-env-changed=ESP_IDF_COMPONENT_MANAGER
+  IDF_PYTHON_ENV_PATH=B:\esp\.embuild\espressif\python_env\idf5.1_py3.11_env
+  ESP_IDF_VERSION=5.1
+  PATH=B:\esp\.embuild\espressif\tools\xtensa-esp32-elf\esp-12.2.0_20230208\xtensa-esp32-elf\bin;B:\esp\.embuild\espressif\tools\esp32ulp-elf\2.35_20220830\esp32ulp-elf\bin;B:\esp\.embuild\espressif\tools\cmake\3.24.0\bin;B:\esp\.embuild\espressif\tools\ninja\1.10.2\;B:\esp\.embuild\espressif\python_env\idf5.1_py3.11_env\Scripts;B:\esp\.embuild\espressif\esp-idf\v5.1.1\tools;%PATH%
+  IDF_DEACTIVATE_FILE_PATH=C:\Users\Mine1\AppData\Local\Temp\tmpc421vmp2idf_15764
+  Current system platform: win64
+  Skipping xtensa-esp32-elf@esp-12.2.0_20230208 (already installed)
+  Skipping cmake@3.24.0 (already installed)
+  Skipping ninja@1.10.2 (already installed)
+  Skipping esp32ulp-elf@2.35_20220830 (already installed)
+  IDF_PYTHON_ENV_PATH=B:\esp\.embuild\espressif\python_env\idf5.1_py3.11_env
+  ESP_IDF_VERSION=5.1
+  PATH=B:\esp\.embuild\espressif\tools\xtensa-esp32-elf\esp-12.2.0_20230208\xtensa-esp32-elf\bin;B:\esp\.embuild\espressif\tools\esp32ulp-elf\2.35_20220830\esp32ulp-elf\bin;B:\esp\.embuild\espressif\tools\cmake\3.24.0\bin;B:\esp\.embuild\espressif\tools\ninja\1.10.2\;B:\esp\.embuild\espressif\python_env\idf5.1_py3.11_env\Scripts;B:\esp\.embuild\espressif\esp-idf\v5.1.1\tools;%PATH%
+  IDF_DEACTIVATE_FILE_PATH=C:\Users\Mine1\AppData\Local\Temp\tmpqy1n2osgidf_3108
+  cargo:rerun-if-changed=B:\esp\sdkconfig.defaults
+  CMAKE_PREFIX_PATH_xtensa-esp32-espidf = None
+  CMAKE_PREFIX_PATH_xtensa_esp32_espidf = None
+  TARGET_CMAKE_PREFIX_PATH = None
+  CMAKE_PREFIX_PATH = None
+  CMAKE_xtensa-esp32-espidf = None
+  CMAKE_xtensa_esp32_espidf = None
+  TARGET_CMAKE = None
+  CMAKE = None
+  running: "cmake" "B:\\esp\\target\\xtensa-esp32-espidf\\debug\\build\\esp-idf-sys-a6e2ef2b64375e69\\out" "-G" "Ninja" "-DCMAKE_TOOLCHAIN_FILE=B:\\esp\\.embuild\\espressif\\esp-idf\\v5.1.1\\tools\\cmake\\toolchain-esp32.cmake" "-DCMAKE_BUILD_TYPE=" "-DPYTHON=B:/esp/.embuild/espressif/python_env/idf5.1_py3.11_env/Scripts/python.exe" "-DCMAKE_INSTALL_PREFIX=B:\\esp\\target\\xtensa-esp32-espidf\\debug\\build\\esp-idf-sys-a6e2ef2b64375e69\\out" "-DCMAKE_C_FLAGS= -mlongcalls -Wno-frame-address -ffunction-sections -fdata-sections" "-DCMAKE_CXX_FLAGS= -mlongcalls -Wno-frame-address -ffunction-sections -fdata-sections" "-DCMAKE_ASM_FLAGS= -mlongcalls -ffunction-sections -fdata-sections"
+  -- git describe returned 'fatal: bad revision 'HEAD''
+  -- Could not use 'git describe' to determine PROJECT_VER.
+  -- Building ESP-IDF components for target esp32
+  -- Checking Python dependencies...
+  Python requirements are satisfied.
+  Constraint file: B:\esp\.embuild\espressif\espidf.constraints.v5.1.txt
+  Requirement files:
+   - B:\esp\.embuild\espressif\esp-idf\v5.1.1\tools\requirements\requirements.core.txt
+  Python being checked: B:\esp\.embuild\espressif\python_env\idf5.1_py3.11_env\Scripts\python.exe
+  -- Project sdkconfig file B:/esp/target/xtensa-esp32-espidf/debug/build/esp-idf-sys-a6e2ef2b64375e69/out/sdkconfig
+  Loading defaults file B:/esp/target/xtensa-esp32-espidf/debug/build/esp-idf-sys-a6e2ef2b64375e69/out/gen-sdkconfig.defaults...
+  Loading defaults file B:/esp/sdkconfig.defaults...
+  -- App "libespidf" version: 1
+  -- Adding linker script B:/esp/target/xtensa-esp32-espidf/debug/build/esp-idf-sys-a6e2ef2b64375e69/out/build/esp-idf/esp_system/ld/memory.ld
+  -- Adding linker script B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_system/ld/esp32/sections.ld.in
+  -- Adding linker script B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_rom/esp32/ld/esp32.rom.ld
+  -- Adding linker script B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_rom/esp32/ld/esp32.rom.api.ld
+  -- Adding linker script B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_rom/esp32/ld/esp32.rom.libgcc.ld
+  -- Adding linker script B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_rom/esp32/ld/esp32.rom.newlib-data.ld
+  -- Adding linker script B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_rom/esp32/ld/esp32.rom.syscalls.ld
+  -- Adding linker script B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_rom/esp32/ld/esp32.rom.newlib-funcs.ld
+  -- Adding linker script B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/soc/esp32/ld/esp32.peripherals.ld
+  -- Components: app_trace app_update bootloader bootloader_support bt cmock console cxx driver efuse esp-tls esp_adc esp_app_format esp_coex esp_common esp_eth esp_event esp_gdbstub esp_hid esp_http_client esp_http_server esp_https_ota esp_https_server esp_hw_support esp_lcd esp_local_ctrl esp_mm esp_netif esp_netif_stack esp_partition esp_phy esp_pm esp_psram esp_ringbuf esp_rom esp_system esp_timer esp_wifi espcoredump esptool_py fatfs freertos hal heap http_parser idf_test ieee802154 json log lwip main mbedtls mqtt newlib nvs_flash openthread partition_table perfmon protobuf-c protocomm pthread sdmmc soc spi_flash spiffs tcp_transport ulp unity usb vfs wear_levelling wifi_provisioning wpa_supplicant xtensa
+  -- Component paths: B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/app_trace B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/app_update B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/bootloader B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/bootloader_support B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/bt B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/cmock B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/console B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/cxx B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/driver B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/efuse B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp-tls B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_adc B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_app_format B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_coex B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_common B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_eth B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_event B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_gdbstub B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_hid B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_http_client B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_http_server B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_https_ota B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_https_server B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_hw_support B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_lcd B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_local_ctrl B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_mm B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_netif B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_netif_stack B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_partition B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_phy B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_pm B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_psram B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_ringbuf B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_rom B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_system B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_timer B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esp_wifi B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/espcoredump B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/esptool_py B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/fatfs B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/freertos B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/hal B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/heap B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/http_parser B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/idf_test B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/ieee802154 B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/json B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/log B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/lwip B:/esp/target/xtensa-esp32-espidf/debug/build/esp-idf-sys-a6e2ef2b64375e69/out/main B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/mbedtls B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/mqtt B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/newlib B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/nvs_flash B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/openthread B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/partition_table B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/perfmon B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/protobuf-c B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/protocomm B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/pthread B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/sdmmc B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/soc B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/spi_flash B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/spiffs B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/tcp_transport B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/ulp B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/unity B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/usb B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/vfs B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/wear_levelling B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/wifi_provisioning B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/wpa_supplicant B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/xtensa
+  -- Configuring done
+  -- Generating done
+  -- Build files have been written to: B:/esp/target/xtensa-esp32-espidf/debug/build/esp-idf-sys-a6e2ef2b64375e69/out/build
+  running: "cmake" "--build" "." "--config" "MinSizeRel" "--parallel" "16"
+  [1/838] Performing configure step for 'bootloader'
+  FAILED: bootloader-prefix/src/bootloader-stamp/bootloader-configure B:/esp/target/xtensa-esp32-espidf/debug/build/esp-idf-sys-a6e2ef2b64375e69/out/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure
+  cmd.exe /C "cd /D B:\esp\target\xtensa-esp32-espidf\debug\build\esp-idf-sys-a6e2ef2b64375e69\out\build\bootloader && B:\esp\.embuild\espressif\tools\cmake\3.24.0\bin\cmake.exe -DSDKCONFIG=B:/esp/target/xtensa-esp32-espidf/debug/build/esp-idf-sys-a6e2ef2b64375e69/out/sdkconfig -DIDF_PATH=B:/esp/.embuild/espressif/esp-idf/v5.1.1 -DIDF_TARGET=esp32 -DPYTHON_DEPS_CHECKED=1 -DPYTHON=B:/esp/.embuild/espressif/python_env/idf5.1_py3.11_env/Scripts/python.exe -DEXTRA_COMPONENT_DIRS=B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/bootloader -DPROJECT_SOURCE_DIR=B:/esp/target/xtensa-esp32-espidf/debug/build/esp-idf-sys-a6e2ef2b64375e69/out -GNinja B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/bootloader/subproject && B:\esp\.embuild\espressif\tools\cmake\3.24.0\bin\cmake.exe -E touch B:/esp/target/xtensa-esp32-espidf/debug/build/esp-idf-sys-a6e2ef2b64375e69/out/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure"
+  CMake Error: The source "B:/esp/.embuild/espressif/esp-idf/v5.1.1/components/bootloader/subproject/CMakeLists.txt" does not match the source "B:/Espressif/frameworks/esp-idf-v5.1.2/components/bootloader/subproject/CMakeLists.txt" used to generate cache.  Re-run cmake with a different source directory.
+  [2/838] Building ASM object esp-idf/esp_system/CMakeFiles/__idf_esp_system.dir/port/arch/xtensa/debug_helpers_asm.S.obj
+  [3/838] Building ASM object esp-idf/esp_system/CMakeFiles/__idf_esp_system.dir/port/arch/xtensa/panic_handler_asm.S.obj
+  [4/838] Building ASM object esp-idf/esp_system/CMakeFiles/__idf_esp_system.dir/port/arch/xtensa/expression_with_stack_asm.S.obj
+  [5/838] Building C object esp-idf/soc/CMakeFiles/__idf_soc.dir/esp32/ledc_periph.c.obj
+  [6/838] Building C object esp-idf/soc/CMakeFiles/__idf_soc.dir/esp32/pcnt_periph.c.obj
+  [7/838] Building C object esp-idf/mbedtls/mbedtls/library/CMakeFiles/mbedcrypto.dir/aes.c.obj
+  [8/838] Building C object esp-idf/spi_flash/CMakeFiles/__idf_spi_flash.dir/spi_flash_wrap.c.obj
+  [9/838] Building C object esp-idf/esp_system/CMakeFiles/__idf_esp_system.dir/port/arch/xtensa/debug_helpers.c.obj
+  [10/838] Building C object esp-idf/esp_system/CMakeFiles/__idf_esp_system.dir/port/arch/xtensa/expression_with_stack.c.obj
+  [11/838] Building C object esp-idf/spi_flash/CMakeFiles/__idf_spi_flash.dir/memspi_host_driver.c.obj
+  [12/838] Building C object esp-idf/spi_flash/CMakeFiles/__idf_spi_flash.dir/spi_flash_chip_mxic_opi.c.obj
+  [13/838] Building C object esp-idf/esp_system/CMakeFiles/__idf_esp_system.dir/port/arch/xtensa/panic_arch.c.obj
+  [14/838] Building C object esp-idf/spi_flash/CMakeFiles/__idf_spi_flash.dir/cache_utils.c.obj
+  [15/838] Building C object esp-idf/spi_flash/CMakeFiles/__idf_spi_flash.dir/esp_flash_spi_init.c.obj
+  [16/838] Building C object esp-idf/spi_flash/CMakeFiles/__idf_spi_flash.dir/esp_flash_api.c.obj
+  ninja: build stopped: subcommand failed.
+
+  --- stderr
+  Build configuration: BuildConfig {
+      esp_idf_tools_install_dir: None,
+      esp_idf_sdkconfig: None,
+      esp_idf_sdkconfig_defaults: None,
+      mcu: Some(
+          "esp32",
+      ),
+      native: NativeConfig {
+          esp_idf_version: Some(
+              Tag(
+                  "v5.1.1",
+              ),
+          ),
+          esp_idf_repository: None,
+          esp_idf_cmake_generator: None,
+          idf_path: None,
+          extra_components: [],
+          esp_idf_components: None,
+          esp_idf_component_manager: None,
+      },
+      esp_idf_sys_root_crate: None,
+  }
+  Using managed esp-idf repository: RemoteSdk { repo_url: None, git_ref: Tag("v5.1.1") }
+  Using esp-idf v5.1.1 at 'B:\esp\.embuild\espressif\esp-idf\v5.1.1'
+  Compiler supported targets: xtensa-esp32-elf
+
+  thread 'main' panicked at C:\Users\Mine1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\cmake-0.1.50\src\lib.rs:1098:5:
+
+  command did not execute successfully, got: exit code: 1
+
+  build script failed, must exit now
+  note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

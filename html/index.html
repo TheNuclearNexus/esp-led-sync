@@ -1,0 +1,20 @@
+<style>
+    
+</style>
+
+<script>
+    
+</script>
+<div class="flex flex-col justify-center w-full h-full">
+    <div class="flex flex-col gap-[2rem] p-[2rem] w-full h-full">
+        <span class="font-bold text-[2rem] text-center">
+            Lamp!!!
+        </span>
+        <div class="flex flex-col gap-[1rem]">
+            <a class="buttonLike" href="/color" disabled="{% is_setup %}">Color & Brightness</a>
+            <a class="buttonLike" href="/setup">Setup</a>
+        </div>
+        <div style="flex-grow: 1;"></div>
+        <span>IP: {% ip %}</span>
+    </div>
+</div>

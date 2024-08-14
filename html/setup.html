@@ -1,0 +1,131 @@
+<style>
+    .networkOption {
+        text-align: left;
+    }
+    .networkOption.selected {
+        background-color: #0984E3;
+    }
+    .spinner {
+        width: 75%;
+        aspect-ratio: 1/1;
+
+        border: 2rem solid #74B9FF;
+        border-top-color: #0984E3;
+
+        border-radius: 50%;
+
+        animation: spin 1s linear;
+        animation-iteration-count: infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>
+    let currentScreen = "networks"
+    
+
+
+    function selectOption(id) {
+        for (let o of document.getElementsByClassName("networkOption selected")) {
+            o.classList.remove('selected')
+        }
+
+        document.getElementById(id).classList.add('selected')
+
+        const continueButton = document.getElementById('continueButton')
+        continueButton.disabled = false
+    }
+
+    function show(e) {
+        e.style.display = 'inherit'
+    }
+    function hide(e) {
+        e.style.display = 'none'
+    }
+
+    function clickBack() {
+
+    }
+
+    async function clickContinue() {
+        const networksDiv = document.getElementById("networks")
+        const passwordDiv = document.getElementById("password")
+        const connectingDiv = document.getElementById("connecting")
+        const failedDiv = document.getElementById("failed")
+        const successDiv = document.getElementById("success")
+
+        const continueButton = document.getElementById('continueButton')
+        const backButton = document.getElementById('continueButton')
+
+        const ssid = document.getElementsByClassName("networkOption selected").item(0).innerHTML;
+        const password = document.getElementById("passwordInput").value;
+
+        console.log(currentScreen);
+        if (currentScreen == "networks") {
+            hide(networksDiv)
+            show(passwordDiv)
+
+            document.getElementById("passwordHeader").innerHTML = `Enter the password for<br/>"${ssid}"`
+
+            currentScreen = "password"
+        } else if (currentScreen == "password") {
+            hide(passwordDiv)
+            show(connectingDiv)
+            continueButton.disabled = true;
+            currentScreen = "connecting"
+
+            const resp = await fetch('/wifi-settings', {method: 'POST', body: `ssid=${ssid}&password=${password}`})
+            hide(connectingDiv)
+            const ip = await resp.json()
+            if (!ip.connected) {
+                show(backButton)
+                show(failedDiv)
+            } else {
+                show(successDiv)
+                document.getElementById("successIp").innerHTML = `Connected!<br/><a href="http://${ip.ip}:3030">Access here</a>`
+            }
+        }
+    }   
+
+</script>
+<div class="flex flex-col justify-center w-full h-full">
+    <div id="networks" class="flex flex-col gap-[2rem] p-[2rem] w-full h-full">
+        <span class="font-bold text-[2rem] text-center">
+            Please Select a Wi-Fi Network
+        </span>
+        <div class="flex flex-col gap-[1rem]" hx-trigger="load" hx-get="/available-networks" hx-swap="innerHTML">
+        </div>
+    </div>
+
+    <div id="password" class="flex flex-col gap-[2rem] p-[2rem] w-full h-full" style="display: none;">
+        <span id="passwordHeader" class="font-bold text-[2rem] text-center">
+            Enter the password for<br/>
+            "ssid"
+        </span>
+        <input id="passwordInput" type="password" placeholder="Password..." class="rounded-[1rem] p-[1rem] text-2xl text-[#2D3436]"/>
+    </div>
+
+    <div id="connecting" class="flex flex-col gap-[2rem] p-[2rem] w-full h-full justify-center items-center" style="display: none;">
+        <span class="font-bold text-[2rem] text-center">
+            Connecting, device should reset. If successful, device should go white.
+        </span>
+    </div>
+
+
+    <div class="flex flex-row gap-[1rem] p-[2rem] rounded-t-[2rem] w-full" style="background-color: rgba(255, 255, 255, 0.08);">
+        <button class="text-center" style="background-color: #D63031; display: none;" id="backButton" onclick="clickBack()">
+            Back
+        </button>
+        <button class="bg-[#00B894]" id="continueButton" onclick="clickContinue()" disabled>
+            Continue
+        </button>
+    </div>
+</div>
