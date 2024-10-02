@@ -1,34 +1,41 @@
 use anyhow::Result;
-use embedded_svc::{wifi::{AccessPointConfiguration, ClientConfiguration}, mqtt::client::QoS};
+use core::str;
+use embedded_svc::{
+    mqtt::client::QoS,
+    wifi::{AccessPointConfiguration, ClientConfiguration},
+};
 use led_controller::{LedController, LedState};
 use log::info;
 use mqtt::{color_topic, process_message};
 use smart_leds_trait::RGB;
-use utils::{get_default_nvs, NVS_PASS, NVS_SSID, swap_netif};
+use utils::{get_default_nvs, swap_netif, NVS_PASS, NVS_SSID};
 use wifi::{get_wifi, set_wifi};
-use core::str;
 
 use esp_idf_svc::{
-    eventloop::{EspSystemEventLoop, EspEventLoop, System},
-    hal::{prelude::*, modem::Modem, gpio::{PinDriver, Pull}},
-    wifi::{EspWifi, BlockingWifi}, 
-    sys::esp_random, 
-    nvs::{EspDefaultNvsPartition, EspDefaultNvs}, 
-    netif::{EspNetif, NetifConfiguration}, 
-    mqtt::client::{EspMqttClient, MqttClientConfiguration, Event::Received},
-    
+    eventloop::{EspEventLoop, EspSystemEventLoop, System},
+    hal::{
+        gpio::{PinDriver, Pull},
+        modem::Modem,
+        prelude::*,
+    },
+    mqtt::client::{EspMqttClient, Event::Received, MqttClientConfiguration},
+    netif::{EspNetif, NetifConfiguration},
+    nvs::{EspDefaultNvs, EspDefaultNvsPartition},
+    sys::esp_random,
+    wifi::{BlockingWifi, EspWifi},
 };
 use std::{
+    error::Error,
+    process,
     thread::{sleep, spawn},
-    time::Duration, error::Error, process,
+    time::Duration,
 };
-
 
 mod http_server;
 mod led_controller;
+mod mqtt;
 mod utils;
 mod wifi;
-mod mqtt;
 
 const MAIN_POLL_RATE: u64 = 10;
 const RESET_HOLD_TIME: u64 = 3000;
@@ -46,7 +53,7 @@ pub struct Config {
     #[default("")]
     mqtt_user: &'static str,
     #[default("")]
-    mqtt_pass: &'static str
+    mqtt_pass: &'static str,
 }
 
 fn get_network_config() -> Option<(String, String)> {
@@ -57,7 +64,7 @@ fn get_network_config() -> Option<(String, String)> {
 
     let ssid: Option<&str> = nvs.get_str(NVS_SSID, &mut ssid_buf).unwrap();
     let password: Option<&str> = nvs.get_str(NVS_PASS, &mut pass_buf).unwrap();
-    
+
     if ssid.is_none() || password.is_none() {
         None
     } else {
@@ -79,10 +86,13 @@ fn start_ap(sysloop: EspEventLoop<System>, device_name: &str) -> Result<(), Box<
     swap_netif(&mut wifi, device_name);
 
     // Enable the AP
-    wifi.set_configuration(&embedded_svc::wifi::Configuration::Mixed(ClientConfiguration::default(), AccessPointConfiguration {
-        ssid: device_name.into(),
-        ..Default::default()
-    }))?;
+    wifi.set_configuration(&embedded_svc::wifi::Configuration::Mixed(
+        ClientConfiguration::default(),
+        AccessPointConfiguration {
+            ssid: device_name.into(),
+            ..Default::default()
+        },
+    ))?;
 
     wifi.start()?;
     Ok(())
@@ -98,31 +108,35 @@ fn main() -> Result<(), Box<dyn Error>> {
     let app_config = CONFIG;
 
     LedController::set(LedState::Connecting);
-    spawn(|| {
-        loop {
-            let lock = LedController::get_instance()
-                .try_lock();
+    spawn(|| loop {
+        let lock = LedController::get_instance().try_lock();
 
-            if lock.is_err() {
-                sleep(Duration::from_millis(10));
-            } else {
-                let mut led_controller = lock
-                    .unwrap();
-                led_controller.tick();
-            }
+        if lock.is_err() {
             sleep(Duration::from_millis(10));
-
+        } else {
+            let mut led_controller = lock.unwrap();
+            led_controller.tick();
         }
+        sleep(Duration::from_millis(10));
     });
 
-    
+    let mut reset = PinDriver::input(peripherals.pins.gpio25).unwrap();
+    let mut reset_timer = 0;
+    reset.set_pull(Pull::Down)?;
+
+    sleep(Duration::from_millis(300));
+    if reset.is_high() {
+        reset_sequence();
+        return Ok(());
+    }
+
     let network_config = get_network_config();
-    
+
     let is_setup = network_config.is_some();
 
     let connected = setup_wifi(peripherals.modem, sysloop, is_setup, network_config)?;
+    let server = http_server::init();
 
-    let server =http_server::init();
 
     if connected {
         let broker_url = if CONFIG.mqtt_user != "" {
@@ -133,23 +147,20 @@ fn main() -> Result<(), Box<dyn Error>> {
         } else {
             format!("mqtt://{}", CONFIG.mqtt_host)
         };
-    
+
         let mqtt_config = MqttClientConfiguration::default();
-    
-    
+
         let mut mqtt = EspMqttClient::new(&broker_url, &mqtt_config, move |ev| match ev {
             Ok(Received(msg)) => process_message(msg),
             _ => {}
-        }).unwrap();
-    
-        mqtt.subscribe(color_topic(UUID).as_str(), QoS::AtLeastOnce).unwrap();
-        
+        })
+        .unwrap();
+
+        mqtt.subscribe(color_topic(UUID).as_str(), QoS::AtLeastOnce)
+            .unwrap();
+
         LedController::set_mqtt(mqtt);
     }
-
-    let mut reset = PinDriver::input(peripherals.pins.gpio25).unwrap();
-    let mut reset_timer = 0;
-    reset.set_pull(Pull::Down)?;
 
     // Prevent program from exiting
     loop {
@@ -160,17 +171,9 @@ fn main() -> Result<(), Box<dyn Error>> {
             } else {
                 reset_timer = 0;
             }
-    
-            if reset_timer >= RESET_HOLD_TIME {
-                for _ in 0..3 {
-                    LedController::set(LedState::Color(RGB::new(128, 0, 0)));
-                    sleep(Duration::from_millis(300));
-                    LedController::set(LedState::Color(RGB::new(0, 0, 0)));
-                    sleep(Duration::from_millis(300));
-                }
-                sleep(Duration::from_millis(700));
 
-                reset_network_config();
+            if reset_timer >= RESET_HOLD_TIME {
+                reset_sequence();
             }
         }
 
@@ -178,7 +181,24 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 }
 
-fn setup_wifi(modem: Modem, sysloop: esp_idf_svc::eventloop::EspEventLoop<esp_idf_svc::eventloop::System>, is_setup: bool, network_config: Option<(String, String)>) -> Result<bool, Box<dyn Error>> {
+fn reset_sequence() {
+    for _ in 0..3 {
+        LedController::set(LedState::Color(RGB::new(128, 0, 0)));
+        sleep(Duration::from_millis(300));
+        LedController::set(LedState::Color(RGB::new(0, 0, 0)));
+        sleep(Duration::from_millis(300));
+    }
+    sleep(Duration::from_millis(700));
+
+    reset_network_config();
+}
+
+fn setup_wifi(
+    modem: Modem,
+    sysloop: esp_idf_svc::eventloop::EspEventLoop<esp_idf_svc::eventloop::System>,
+    is_setup: bool,
+    network_config: Option<(String, String)>,
+) -> Result<bool, Box<dyn Error>> {
     set_wifi(modem, sysloop.clone());
 
     let mut connected = false;
@@ -186,21 +206,25 @@ fn setup_wifi(modem: Modem, sysloop: esp_idf_svc::eventloop::EspEventLoop<esp_id
         start_ap(sysloop.clone(), CONFIG.device_name)?;
         info!("Awaiting Setup");
         connected = false;
-        LedController::set(LedState::Setup);    
+        LedController::set(LedState::Setup);
     } else {
         let (ssid, password) = network_config.unwrap();
 
         info!("Using Credientials: {ssid}, {password}");
 
-        connected = wifi::connect(ssid.trim_matches(char::from(0)), password.trim_matches(char::from(0)), true)?;
+        connected = wifi::connect(
+            ssid.trim_matches(char::from(0)),
+            password.trim_matches(char::from(0)),
+            true,
+        )?;
 
         info!("Connected");
         if connected {
-            LedController::set(LedState::Color(RGB::new(255,255,255)));
+            LedController::set(LedState::Color(RGB::new(255, 255, 255)));
         } else {
-            LedController::set(LedState::Setup);    
+            LedController::set(LedState::Setup);
         }
     }
-    
+
     Ok(connected)
 }

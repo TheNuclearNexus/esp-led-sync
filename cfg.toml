@@ -1,4 +1,4 @@
 [test-rust-esp]
-partner_name="lamp_otter_lover"
-device_name="lamp_chico_beepo"
+device_name="lamp_otter_lover"
+partner_name="lamp_chico_beepo"
 mqtt_host="test.mosquitto.org"
